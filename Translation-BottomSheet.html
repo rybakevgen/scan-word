@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Translation BottomSheet</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --accent: #3B82F6;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-500);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--neutral-800);
+        }
+
+        /* Captured Photo (placeholder) */
+        .captured-photo {
+            width: 100%;
+            height: 100%;
+            background: var(--neutral-800);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="393" height="852"><rect fill="%23262626" width="393" height="852"/><text x="50%" y="30%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">The quick brown fox jumps</text><text x="50%" y="35%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">over the lazy dog near</text><text x="50%" y="40%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">a peaceful river.</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* WordHighlightOverlay Components (showing "peaceful" as selected) */
+        .word-highlight {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .word-highlight.selected {
+            background: rgba(59, 130, 246, 0.4);
+        }
+
+        .word-1 { top: 242px; left: 96px; width: 42px; height: 24px; }
+        .word-2 { top: 242px; left: 146px; width: 62px; height: 24px; }
+        .word-3 { top: 242px; left: 216px; width: 62px; height: 24px; }
+        .word-4 { top: 242px; left: 286px; width: 34px; height: 24px; }
+        .word-5 { top: 284px; left: 96px; width: 54px; height: 24px; }
+        .word-6 { top: 284px; left: 158px; width: 40px; height: 24px; }
+        .word-7 { top: 284px; left: 206px; width: 44px; height: 24px; }
+        .word-8 { top: 284px; left: 258px; width: 34px; height: 24px; }
+        .word-9 { top: 326px; left: 96px; width: 14px; height: 24px; }
+        .word-10 { top: 326px; left: 118px; width: 78px; height: 24px; }
+        .word-11 { top: 326px; left: 204px; width: 52px; height: 24px; }
+
+        /* Top Gradient Overlay */
+        .top-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(23, 23, 23, 0.8), rgba(23, 23, 23, 0));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* TopBar Component */
+        .topbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 56px 16px 16px 16px;
+            z-index: 2;
+        }
+
+        /* IconButton Component */
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Title */
+        .title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .spacer {
+            width: 44px;
+            height: 44px;
+        }
+
+        /* Bottom Gradient Overlay */
+        .bottom-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(23, 23, 23, 0), rgba(23, 23, 23, 0.8));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Control Zone */
+        .control-zone {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 88px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px 24px 16px;
+            z-index: 2;
+        }
+
+        /* SecondaryButton Component */
+        .secondary-button {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--white);
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0px 2px 8px rgba(23, 23, 23, 0.16);
+        }
+
+        /* Backdrop Overlay */
+        .backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 23, 23, 0.6);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        /* BottomSheet Component */
+        .bottomsheet {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            border-radius: 16px 16px 0 0;
+            z-index: 11;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0px -4px 16px rgba(23, 23, 23, 0.16);
+        }
+
+        /* Drag Handle */
+        .drag-handle {
+            width: 32px;
+            height: 4px;
+            background: var(--neutral-300);
+            border-radius: 2px;
+            margin: 12px auto 0;
+        }
+
+        /* BottomSheet Content */
+        .bottomsheet-content {
+            display: flex;
+            flex-direction: column;
+            padding: 0 16px;
+        }
+
+        /* Selected Word (Title) */
+        .selected-word {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 20px;
+        }
+
+        /* Translation Text */
+        .translation-text {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+
+        /* Pronunciation */
+        .pronunciation {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+        }
+
+        /* Example Sentence */
+        .example {
+            font-size: 14px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-tertiary);
+            margin-top: 16px;
+            line-height: 1.4;
+        }
+
+        /* PrimaryButton Component */
+        .primary-button {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--accent);
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .primary-button:active {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- Captured Photo (placeholder) -->
+        <div class="captured-photo"></div>
+
+        <!-- WordHighlightOverlay Components -->
+        <div class="word-highlight word-1"></div>
+        <div class="word-highlight word-2"></div>
+        <div class="word-highlight word-3"></div>
+        <div class="word-highlight word-4"></div>
+        <div class="word-highlight word-5"></div>
+        <div class="word-highlight word-6"></div>
+        <div class="word-highlight word-7"></div>
+        <div class="word-highlight word-8"></div>
+        <div class="word-highlight word-9"></div>
+        <div class="word-highlight word-10 selected"></div>
+        <div class="word-highlight word-11"></div>
+
+        <!-- Top Gradient Overlay -->
+        <div class="top-gradient"></div>
+
+        <!-- TopBar Component -->
+        <div class="topbar">
+            <!-- IconButton Component: Close -->
+            <button class="icon-button" aria-label="Close">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="title">Tap a word</div>
+
+            <!-- Spacer -->
+            <div class="spacer"></div>
+        </div>
+
+        <!-- Bottom Gradient Overlay -->
+        <div class="bottom-gradient"></div>
+
+        <!-- Control Zone -->
+        <div class="control-zone">
+            <!-- SecondaryButton Component -->
+            <button class="secondary-button">Retake Photo</button>
+        </div>
+
+        <!-- Backdrop Overlay -->
+        <div class="backdrop"></div>
+
+        <!-- BottomSheet Component -->
+        <div class="bottomsheet">
+            <!-- Drag Handle -->
+            <div class="drag-handle"></div>
+
+            <!-- BottomSheet Content -->
+            <div class="bottomsheet-content">
+                <!-- Selected Word (Title) -->
+                <div class="selected-word">peaceful</div>
+
+                <!-- Translation Text -->
+                <div class="translation-text">paisible, tranquille</div>
+
+                <!-- Pronunciation (optional) -->
+                <div class="pronunciation">(?pi?sf?l)</div>
+
+                <!-- Example Sentence (optional) -->
+                <div class="example">The village was peaceful and quiet at dawn.</div>
+
+                <!-- PrimaryButton Component -->
+                <button class="primary-button">Save to Dictionary</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction: close bottomsheet on backdrop click
+        document.querySelector('.backdrop').addEventListener('click', function() {
+            document.querySelector('.bottomsheet').style.display = 'none';
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
