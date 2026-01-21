@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Practice — Session (Translation)</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --neutral-100: #F5F5F5;
+            --accent: #3B82F6;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-500);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TopBar Component */
+        .topbar {
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 56px 16px 16px 16px;
+            background: var(--white);
+            border-bottom: 1px solid var(--neutral-300);
+            flex-shrink: 0;
+        }
+
+        /* IconButton Component */
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Title */
+        .topbar-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            min-width: 44px;
+            text-align: right;
+        }
+
+        /* Translation Prompt Area */
+        .prompt-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+        }
+
+        /* Card Component (Translation Prompt) */
+        .translation-card {
+            width: 100%;
+            min-height: 320px;
+            background: var(--white);
+            border: 1px solid var(--neutral-300);
+            border-radius: 16px;
+            box-shadow: 0px 4px 16px rgba(23, 23, 23, 0.08);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 300ms ease;
+        }
+
+        /* Prompt State */
+        .prompt-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .prompt-word {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .prompt-instruction-1 {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .prompt-instruction-2 {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+        }
+
+        /* Answer State */
+        .answer-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .answer-state.visible {
+            display: flex;
+        }
+
+        .answer-translation {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .answer-pronunciation {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .answer-example {
+            font-size: 16px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+            max-width: 80%;
+        }
+
+        .translation-card.revealed .prompt-state {
+            display: none;
+        }
+
+        .translation-card.revealed .answer-state {
+            display: flex;
+        }
+
+        /* Action Area */
+        .action-area {
+            width: 100%;
+            display: flex;
+            gap: 12px;
+            padding: 0 16px 24px 16px;
+            flex-shrink: 0;
+        }
+
+        /* SecondaryButton Component (Left) */
+        .secondary-button {
+            flex: 1;
+            height: 56px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--neutral-700);
+            color: var(--neutral-700);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 150ms ease;
+        }
+
+        .secondary-button:active:not(:disabled) {
+            background: var(--neutral-100);
+        }
+
+        .secondary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* PrimaryButton Component (Right) */
+        .primary-button {
+            flex: 1;
+            height: 56px;
+            border-radius: 8px;
+            background: var(--accent);
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 150ms ease;
+        }
+
+        .primary-button:active:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .primary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- TopBar Component -->
+        <div class="topbar">
+            <!-- IconButton Component: Exit -->
+            <button class="icon-button" id="exitButton" aria-label="Exit">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="topbar-title">Translation</div>
+
+            <!-- Progress Indicator -->
+            <div class="progress-indicator" id="progressIndicator">3 / 20</div>
+        </div>
+
+        <!-- Translation Prompt Area -->
+        <div class="prompt-area">
+            <!-- Card Component (Translation Prompt) -->
+            <div class="translation-card" id="translationCard">
+                <!-- Prompt State -->
+                <div class="prompt-state">
+                    <div class="prompt-word">serendipity</div>
+                    <div class="prompt-instruction-1">Translate this word</div>
+                    <div class="prompt-instruction-2">Tap to check your answer</div>
+                </div>
+
+                <!-- Answer State -->
+                <div class="answer-state">
+                    <div class="answer-translation">serendipite</div>
+                    <div class="answer-pronunciation">(?ser?n?d?p?ti)</div>
+                    <div class="answer-example">It was pure serendipity that we met at the cafe that day.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Area -->
+        <div class="action-area">
+            <!-- SecondaryButton Component -->
+            <button class="secondary-button" id="incorrectButton">I translated it incorrectly</button>
+
+            <!-- PrimaryButton Component -->
+            <button class="primary-button" id="correctButton">I translated it correctly</button>
+        </div>
+    </div>
+
+    <script>
+        const translationCard = document.getElementById('translationCard');
+        const incorrectButton = document.getElementById('incorrectButton');
+        const correctButton = document.getElementById('correctButton');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const exitButton = document.getElementById('exitButton');
+
+        let currentCard = 3;
+        const totalCards = 20;
+
+        // Reveal answer on card tap
+        translationCard.addEventListener('click', function() {
+            this.classList.toggle('revealed');
+        });
+
+        // Handle "I translated it incorrectly" button
+        incorrectButton.addEventListener('click', function() {
+            handleAnswer(false);
+        });
+
+        // Handle "I translated it correctly" button
+        correctButton.addEventListener('click', function() {
+            handleAnswer(true);
+        });
+
+        function handleAnswer(correct) {
+            // Disable both buttons immediately
+            incorrectButton.disabled = true;
+            correctButton.disabled = true;
+
+            // Record answer (scoring logic would go here)
+            console.log(correct ? 'Correct' : 'Incorrect');
+
+            // Update progress
+            currentCard++;
+            progressIndicator.textContent = `${currentCard} / ${totalCards}`;
+
+            // Simulate card transition after 300ms
+            setTimeout(() => {
+                // Reset card to prompt state
+                translationCard.classList.remove('revealed');
+
+                // Re-enable buttons
+                incorrectButton.disabled = false;
+                correctButton.disabled = false;
+
+                // Check if session complete
+                if (currentCard > totalCards) {
+                    alert('Session complete!');
+                    // Would navigate to Practice — Result (Translation)
+                }
+            }, 300);
+        }
+
+        // Exit button
+        exitButton.addEventListener('click', function() {
+            if (confirm('Exit practice session?\nYour progress will be saved.')) {
+                alert('Returning to Practice Home');
+                // Would navigate back to Practice — Home
+            }
+        });
+    </script>
+</body>
+</html>
