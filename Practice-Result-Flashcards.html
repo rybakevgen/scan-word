@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Practice — Result (Flashcards)</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --neutral-100: #F5F5F5;
+            --accent: #3B82F6;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-500);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Completion Title */
+        .completion-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        /* Card Component (Result Summary) */
+        .result-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px 32px 0 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Metric Row */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-value.success-rate {
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--neutral-300);
+            margin: 16px 0;
+        }
+
+        /* Feedback Message */
+        .feedback-message {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.5;
+            margin: 24px 32px 0 32px;
+        }
+
+        /* Action Area */
+        .action-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 16px 24px 16px;
+            margin-top: auto;
+        }
+
+        /* PrimaryButton Component */
+        .primary-button {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--accent);
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .primary-button:active {
+            opacity: 0.9;
+        }
+
+        /* SecondaryButton Component */
+        .secondary-button {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--neutral-300);
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .secondary-button:active {
+            background: var(--neutral-100);
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Completion Title -->
+            <div class="completion-title">Session complete</div>
+
+            <!-- Card Component (Result Summary) -->
+            <div class="result-card">
+                <!-- Metric 1: Total Cards -->
+                <div class="metric-row">
+                    <div class="metric-label">Total cards</div>
+                    <div class="metric-value">20</div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Metric 2: Correct -->
+                <div class="metric-row">
+                    <div class="metric-label">Correct</div>
+                    <div class="metric-value">16</div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Metric 3: Incorrect -->
+                <div class="metric-row">
+                    <div class="metric-label">Incorrect</div>
+                    <div class="metric-value">4</div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Metric 4: Success Rate -->
+                <div class="metric-row">
+                    <div class="metric-label">Success rate</div>
+                    <div class="metric-value success-rate">80%</div>
+                </div>
+            </div>
+
+            <!-- Feedback Message -->
+            <div class="feedback-message">Good progress.</div>
+        </div>
+
+        <!-- Action Area -->
+        <div class="action-area">
+            <!-- PrimaryButton Component -->
+            <button class="primary-button">Continue practicing</button>
+
+            <!-- SecondaryButton Component -->
+            <button class="secondary-button">Back to dictionary</button>
+        </div>
+    </div>
+</body>
+</html>
