@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Practice — Session (Multiple Choice)</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --neutral-100: #F5F5F5;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --destructive: #DC2626;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-500);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TopBar Component */
+        .topbar {
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 56px 16px 16px 16px;
+            background: var(--white);
+            border-bottom: 1px solid var(--neutral-300);
+            flex-shrink: 0;
+        }
+
+        /* IconButton Component */
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Title */
+        .topbar-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            min-width: 44px;
+            text-align: right;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* Question Area */
+        .question-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        /* Card Component (Prompt) */
+        .prompt-card {
+            width: 100%;
+            max-width: 329px;
+            min-height: 180px;
+            background: var(--white);
+            border: 1px solid var(--neutral-300);
+            border-radius: 16px;
+            box-shadow: 0px 4px 16px rgba(23, 23, 23, 0.08);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prompt-word {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .prompt-instruction {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        /* Answer Options Area */
+        .options-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 329px;
+            margin: 0 auto;
+        }
+
+        /* Option Item */
+        .option-item {
+            height: 56px;
+            padding: 16px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            background: var(--white);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: background 150ms ease, border-color 150ms ease;
+        }
+
+        .option-item:active {
+            background: var(--neutral-100);
+        }
+
+        .option-item.selected {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .option-item.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option-item.incorrect {
+            border-color: var(--destructive);
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .option-item.disabled {
+            cursor: not-allowed;
+        }
+
+        /* Action Area */
+        .action-area {
+            width: 100%;
+            display: flex;
+            padding: 0 16px 24px 16px;
+            flex-shrink: 0;
+        }
+
+        /* PrimaryButton Component */
+        .primary-button {
+            width: 100%;
+            height: 56px;
+            border-radius: 8px;
+            background: var(--accent);
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 150ms ease;
+        }
+
+        .primary-button:active:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .primary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- TopBar Component -->
+        <div class="topbar">
+            <!-- IconButton Component: Exit -->
+            <button class="icon-button" id="exitButton" aria-label="Exit">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="topbar-title">Multiple Choice</div>
+
+            <!-- Progress Indicator -->
+            <div class="progress-indicator" id="progressIndicator">3 / 20</div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Question Area -->
+            <div class="question-area">
+                <!-- Card Component (Prompt) -->
+                <div class="prompt-card">
+                    <div class="prompt-word">serendipity</div>
+                    <div class="prompt-instruction">Choose the correct translation</div>
+                </div>
+            </div>
+
+            <!-- Answer Options Area -->
+            <div class="options-area">
+                <div class="option-item" data-option="0">serendipite</div>
+                <div class="option-item" data-option="1">bonheur</div>
+                <div class="option-item" data-option="2">hasard</div>
+                <div class="option-item" data-option="3">chance</div>
+            </div>
+        </div>
+
+        <!-- Action Area -->
+        <div class="action-area">
+            <!-- PrimaryButton Component -->
+            <button class="primary-button" id="continueButton" disabled>Continue</button>
+        </div>
+    </div>
+
+    <script>
+        const options = document.querySelectorAll('.option-item');
+        const continueButton = document.getElementById('continueButton');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const exitButton = document.getElementById('exitButton');
+
+        let selectedOption = null;
+        let currentQuestion = 3;
+        const totalQuestions = 20;
+        const correctAnswer = 0; // Index of correct answer (serendipite)
+
+        // Handle option selection
+        options.forEach((option, index) => {
+            option.addEventListener('click', function() {
+                if (option.classList.contains('disabled')) return;
+
+                // Clear previous selection
+                options.forEach(opt => opt.classList.remove('selected'));
+
+                // Select this option
+                this.classList.add('selected');
+                selectedOption = index;
+
+                // Enable continue button
+                continueButton.disabled = false;
+            });
+        });
+
+        // Handle continue button
+        continueButton.addEventListener('click', function() {
+            if (this.disabled) return;
+
+            // Disable button immediately
+            this.disabled = true;
+
+            // Disable all options
+            options.forEach(opt => opt.classList.add('disabled'));
+
+            // Show feedback
+            options[correctAnswer].classList.add('correct');
+            if (selectedOption !== correctAnswer) {
+                options[selectedOption].classList.add('incorrect');
+            }
+
+            // Record answer
+            const isCorrect = selectedOption === correctAnswer;
+            console.log(isCorrect ? 'Correct' : 'Incorrect');
+
+            // Wait 500ms, then move to next question
+            setTimeout(() => {
+                // Update progress
+                currentQuestion++;
+                progressIndicator.textContent = `${currentQuestion} / ${totalQuestions}`;
+
+                // Reset options
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect', 'disabled');
+                });
+
+                // Reset selection and button
+                selectedOption = null;
+                continueButton.disabled = true;
+
+                // Check if session complete
+                if (currentQuestion > totalQuestions) {
+                    alert('Session complete!');
+                    // Would navigate to Practice — Result (Multiple Choice)
+                }
+            }, 500);
+        });
+
+        // Exit button
+        exitButton.addEventListener('click', function() {
+            if (confirm('Exit practice session?\nYour progress will be saved.')) {
+                alert('Returning to Practice Home');
+                // Would navigate back to Practice — Home
+            }
+        });
+    </script>
+</body>
+</html>
