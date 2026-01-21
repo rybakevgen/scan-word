@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scan Processing — OCR in Progress</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --accent: #3B82F6;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--neutral-800);
+        }
+
+        /* Captured Photo Background (placeholder) */
+        .captured-photo {
+            width: 100%;
+            height: 100%;
+            background: var(--neutral-800);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="393" height="852"><rect fill="%23262626" width="393" height="852"/><text x="50%" y="30%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">The quick brown fox jumps</text><text x="50%" y="35%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">over the lazy dog near</text><text x="50%" y="40%" text-anchor="middle" fill="%23737373" font-family="sans-serif" font-size="16">a peaceful river.</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Dark Overlay (70% opacity) */
+        .dark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 23, 23, 0.7);
+            z-index: 1;
+        }
+
+        /* Center Content Container */
+        .center-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* SystemLoadingIndicator (platform-native utility component) */
+        .loading-indicator {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status Text */
+        .status-text {
+            margin-top: 16px;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--white);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- Captured Photo Background (placeholder) -->
+        <div class="captured-photo"></div>
+
+        <!-- Dark Overlay (70% opacity) -->
+        <div class="dark-overlay"></div>
+
+        <!-- Center Content -->
+        <div class="center-content">
+            <!-- SystemLoadingIndicator (platform-native utility component) -->
+            <div class="loading-indicator"></div>
+
+            <!-- Status Text -->
+            <div class="status-text">Detecting text...</div>
+        </div>
+    </div>
+</body>
+</html>
