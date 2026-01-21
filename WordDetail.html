@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Word Detail</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --neutral-100: #F5F5F5;
+            --accent: #3B82F6;
+            --destructive: #DC2626;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-500);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TopBar Component */
+        .topbar {
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 56px 16px 16px 16px;
+            background: var(--white);
+            border-bottom: 1px solid var(--neutral-300);
+            flex-shrink: 0;
+        }
+
+        /* IconButton Component */
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Title */
+        .topbar-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            text-align: center;
+        }
+
+        .spacer {
+            width: 44px;
+            height: 44px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 20px 16px 16px 16px;
+            margin: 16px 16px 0 16px;
+        }
+
+        /* Word Content Section */
+        .word-content .word {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .word-content .translation {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .word-content .pronunciation {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+        }
+
+        .word-content .example {
+            font-size: 16px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+
+        /* Learning Status Section */
+        .section-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 150ms ease;
+        }
+
+        .radio-option.selected {
+            border-color: var(--accent);
+        }
+
+        .radio-button {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .radio-option.selected .radio-button {
+            border-color: var(--accent);
+        }
+
+        .radio-button-inner {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .radio-option.selected .radio-button-inner {
+            background: var(--accent);
+        }
+
+        .radio-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        /* Progress Statistics Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-box {
+            height: 80px;
+            background: var(--neutral-100);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .empty-note {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        /* Destructive Actions Section */
+        .destructive-actions {
+            margin: 24px 16px 32px 16px;
+        }
+
+        /* SecondaryButton Component (Destructive variant) */
+        .secondary-button-destructive {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--destructive);
+            color: var(--destructive);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .secondary-button-destructive:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- TopBar Component -->
+        <div class="topbar">
+            <!-- IconButton Component: Back -->
+            <button class="icon-button" aria-label="Back">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="topbar-title">serendipity</div>
+
+            <!-- Spacer -->
+            <div class="spacer"></div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Section 1: Word Content -->
+            <div class="card word-content">
+                <div class="word">serendipity</div>
+                <div class="translation">serendipite</div>
+                <div class="pronunciation">(?ser?n?d?p?ti)</div>
+                <div class="example">It was pure serendipity that we met at the cafe that day.</div>
+            </div>
+
+            <!-- Section 2: Learning Status -->
+            <div class="card">
+                <div class="section-label">Learning status</div>
+                <div class="radio-group">
+                    <div class="radio-option selected">
+                        <div class="radio-button">
+                            <div class="radio-button-inner"></div>
+                        </div>
+                        <div class="radio-label">Learning</div>
+                    </div>
+                    <div class="radio-option">
+                        <div class="radio-button">
+                            <div class="radio-button-inner"></div>
+                        </div>
+                        <div class="radio-label">Learned</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Progress / Statistics -->
+            <div class="card">
+                <div class="section-label">Your progress</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">4.2</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Incorrect</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Destructive Actions -->
+            <div class="destructive-actions">
+                <!-- SecondaryButton Component (Destructive variant) -->
+                <button class="secondary-button-destructive">Remove from Dictionary</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction: toggle radio button selection
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
