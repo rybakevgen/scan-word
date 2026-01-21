@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" width="device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scan Camera — Default</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --neutral-900: #171717;
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-300: #D4D4D4;
+            --accent: #3B82F6;
+            --bg: var(--white);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Artboard */
+        .artboard {
+            width: 393px;
+            height: 852px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--neutral-800);
+        }
+
+        /* Camera Feed (placeholder) */
+        .camera-feed {
+            width: 100%;
+            height: 100%;
+            background: var(--neutral-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+
+        /* Top Gradient Overlay */
+        .top-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(23, 23, 23, 0.8), rgba(23, 23, 23, 0));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* TopBar Component */
+        .topbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 56px 16px 16px 16px;
+            z-index: 2;
+        }
+
+        /* IconButton Component */
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        .icon-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Title */
+        .title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .spacer {
+            width: 44px;
+            height: 44px;
+        }
+
+        /* Bottom Gradient Overlay */
+        .bottom-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(23, 23, 23, 0), rgba(23, 23, 23, 0.8));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Capture Controls */
+        .capture-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 32px;
+            z-index: 2;
+        }
+
+        /* PrimaryButton Component (Circular variant for capture) */
+        .primary-button-capture {
+            width: 72px;
+            height: 72px;
+            border-radius: 36px;
+            background: var(--white);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 4px 12px rgba(23, 23, 23, 0.24);
+        }
+
+        .primary-button-capture svg {
+            width: 32px;
+            height: 32px;
+            color: var(--neutral-900);
+        }
+    </style>
+</head>
+<body>
+    <div class="artboard">
+        <!-- Camera Feed (placeholder) -->
+        <div class="camera-feed">
+            [Live Camera Viewfinder]
+        </div>
+
+        <!-- Top Gradient Overlay -->
+        <div class="top-gradient"></div>
+
+        <!-- TopBar Component -->
+        <div class="topbar">
+            <!-- IconButton Component: Back -->
+            <button class="icon-button" aria-label="Back">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="title">Scan Text</div>
+
+            <!-- Spacer (for balance) -->
+            <div class="spacer"></div>
+        </div>
+
+        <!-- Bottom Gradient Overlay -->
+        <div class="bottom-gradient"></div>
+
+        <!-- Capture Controls -->
+        <div class="capture-controls">
+            <!-- PrimaryButton Component: Capture (circular variant) -->
+            <button class="primary-button-capture" aria-label="Capture">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
